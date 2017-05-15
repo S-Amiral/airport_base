@@ -1,4 +1,5 @@
 package airport.com;
+
 import java.awt.Image;
 //gestion de ressources
 
@@ -19,5 +20,15 @@ public class Tools {
 		}
 		return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_DEFAULT));
 	}
+
+	public static void simulateTime(int ms) {
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static final int TEST_TIME = 2000;
 
 }

@@ -25,15 +25,15 @@ public class AirportFrame extends JFrame {
 	
 	//images d'avion
 	
-	private ArrayList<JLabel> listTerm;
-	private ArrayList<JLabel> listArr;
-	private ArrayList<JLabel> listDep;
+	public ArrayList<JLabel> listTerm;
+	public ArrayList<JLabel> listArr;
+	public ArrayList<JLabel> listDep;
 	
-	private JLabel nbOnAirLabel;
-	private JLabel nbLandingLabel;
-	private JLabel nbTermLabel;
-	private JLabel nbTakeOffLabel;
-	private JLabel nbOnAirLeaveLabel;
+	public JLabel nbOnAirLabel;
+	public JLabel nbLandingLabel;
+	public JLabel nbTermLabel;
+	public JLabel nbTakeOffLabel;
+	public JLabel nbOnAirLeaveLabel;
 
 	private int nbPisteArr;
 	private int nbPisteDep;
