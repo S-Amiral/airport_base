@@ -1,7 +1,6 @@
 package airport.com;
 
 import java.awt.Image;
-//gestion de ressources
 
 import javax.swing.ImageIcon;
 

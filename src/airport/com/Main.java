@@ -1,7 +1,11 @@
+/******************************************************************
+ * Axel Rieben & Johnny Da Costa
+ * Programmation concurrente : laboratoire 3
+ * 29 mai 2017
+ ******************************************************************/
+
 package airport.com;
 
-import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -25,7 +29,7 @@ public class Main {
 		AirportFrame airportFrame = new AirportFrame(nbPisteArr, nbPisteDep, nbPlace, nbAvion);
 
 		/**
-		 * premiÃ¨re version
+		 * première version
 		 */
 		BlockingQueue<Avion> airArr = new ArrayBlockingQueue<Avion>(nbAvion);
 		BlockingQueue<Avion> tarmacLand = new ArrayBlockingQueue<Avion>(nbPisteArr);
@@ -45,9 +49,6 @@ public class Main {
 
 		airportFrame.setVisible(true);
 		airportFrame.pack();
-
-		System.out.println("Current count : " + Thread.activeCount());
-		System.out.println("AirArr count : " + airArr.size());
 	}
 
 }

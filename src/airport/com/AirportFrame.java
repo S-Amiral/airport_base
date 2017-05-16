@@ -1,7 +1,10 @@
 package airport.com;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,23 +15,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 public class AirportFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-    //liste d'avion à chaque endroits
+	// liste d'avion à chaque endroits
 	private List<Avion> avionOnAirArray;
 	private List<Avion> avionLandingArray;
 	private List<Avion> avionTermArray;
 	private List<Avion> avionTakeOffArray;
 	private List<Avion> avionOnAirLeaveArray;
-	
-	//images d'avion
-	
+
+	// images d'avion
 	public ArrayList<JLabel> listTerm;
 	public ArrayList<JLabel> listArr;
 	public ArrayList<JLabel> listDep;
-	
+
 	public JLabel nbOnAirLabel;
 	public JLabel nbLandingLabel;
 	public JLabel nbTermLabel;
@@ -38,19 +39,18 @@ public class AirportFrame extends JFrame {
 	private int nbPisteArr;
 	private int nbPisteDep;
 	private int nbPlace;
-	
 
 	public AirportFrame(int _nbPisteArr, int _nbPisteDep, int _nbPlace, int _nbAvion) {
 		nbPisteArr = _nbPisteArr;
 		nbPisteDep = _nbPisteDep;
 		nbPlace = _nbPlace;
-				
+
 		avionOnAirArray = new ArrayList<Avion>();
 		avionLandingArray = new ArrayList<Avion>();
 		avionTermArray = new ArrayList<Avion>();
 		avionTakeOffArray = new ArrayList<Avion>();
 		avionOnAirLeaveArray = new ArrayList<Avion>();
-		
+
 		listArr = new ArrayList<JLabel>();
 		listTerm = new ArrayList<JLabel>();
 		listDep = new ArrayList<JLabel>();
@@ -104,7 +104,7 @@ public class AirportFrame extends JFrame {
 		panel.add(airportPanel, BorderLayout.CENTER);
 
 		JPanel parkPanel = new JPanel();
-		
+
 		for (int i = 1; i <= _nbPlace; i++) {
 			ImageIcon imgPark = new ImageIcon("img/waiting.png");
 			JLabel imgParkLabel = new JLabel("", Tools.scaleImage(imgPark, 50, 50), JLabel.CENTER);
@@ -112,8 +112,7 @@ public class AirportFrame extends JFrame {
 			listTerm.add(imgParkLabel);
 			imgParkLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 			parkPanel.add(imgParkLabel);
-			
-			
+
 		}
 		panel.add(parkPanel, BorderLayout.SOUTH);
 
@@ -127,18 +126,120 @@ public class AirportFrame extends JFrame {
 		nbOnAirLeaveLabel = new JLabel("nb avion en air (depart) :", JLabel.CENTER);
 		onAirPanel.add(nbOnAirLeaveLabel);
 		panel.add(onAirPanel, BorderLayout.NORTH);
-		
-		
+
 		JPanel bouton = new JPanel();
-		bouton.setLayout(new GridLayout(1, 2)); 
+		bouton.setLayout(new GridLayout(1, 2));
 		JPanel start = new JPanel();
 		JPanel stop = new JPanel();
-		start.add(new JButton("Start"));
-		stop.add(new JButton("Stop"));
-		
-		bouton.add(start);bouton.add(stop);
-		panel.add(bouton,BorderLayout.EAST);
+
+		JButton buttonStart = new JButton("Start");
+		start.add(buttonStart);
+		buttonStart.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
+		JButton buttonStop = new JButton("Stop");
+		stop.add(buttonStop);
+		buttonStop.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
+		bouton.add(start);
+		bouton.add(stop);
+		panel.add(bouton, BorderLayout.EAST);
 
 		this.getContentPane().add(panel);
+
+	}
+
+	public synchronized void arrive(Avion avion) {
+		avionOnAirArray.add(avion);
+		nbOnAirLabel.setText("" + avionOnAirArray.size());
+	}
+
+	public synchronized void land(Avion avion) {
+		avionOnAirArray.remove(avion);
+		nbOnAirLabel.setText("" + avionOnAirArray.size());
+
+		avionLandingArray.add(avion);
+
+		nbLandingLabel.setText("" + avionLandingArray.size());
+
+		updateLandingImage();
+	}
+
+	public synchronized void park(Avion avion) {
+		avionLandingArray.remove(avion);
+		nbLandingLabel.setText("" + avionLandingArray.size());
+
+		avionTermArray.add(avion);
+		nbTermLabel.setText("" + avionTermArray.size());
+
+		updateLandingImage();
+		updateParkingImage();
+	}
+
+	public synchronized void takeOff(Avion avion) {
+		avionTermArray.remove(avion);
+		nbTermLabel.setText("" + avionTermArray.size());
+
+		avionTakeOffArray.add(avion);
+		nbTakeOffLabel.setText("" + avionTakeOffArray.size());
+
+		updateParkingImage();
+		updateTakeOffImage();
+	}
+
+	public synchronized void depart(Avion avion) {
+		avionTakeOffArray.remove(avion);
+		nbTakeOffLabel.setText("" + avionTakeOffArray.size());
+
+		avionOnAirLeaveArray.add(avion);
+		nbOnAirLeaveLabel.setText("" + avionOnAirLeaveArray.size());
+
+		updateTakeOffImage();
+	}
+
+	private void updateLandingImage() {
+		for (int i = 0; i < nbPisteArr; i++) {
+			if (i < avionLandingArray.size()) {
+				listArr.get(i).setVisible(true);
+				listArr.get(i).setText(avionLandingArray.get(i).getCode());
+			} else {
+				listArr.get(i).setVisible(false);
+			}
+		}
+	}
+
+	private void updateParkingImage() {
+		for (int i = 0; i < nbPlace; i++) {
+			if (i < avionTermArray.size()) {
+				listTerm.get(i).setVisible(true);
+				listTerm.get(i).setText(avionTermArray.get(i).getCode());
+			} else {
+				listTerm.get(i).setVisible(false);
+			}
+		}
+	}
+
+	private void updateTakeOffImage() {
+		for (int i = 0; i < nbPisteDep; i++) {
+			if (i < avionTakeOffArray.size()) {
+				listDep.get(i).setVisible(true);
+				listDep.get(i).setText(avionTakeOffArray.get(i).getCode());
+			} else {
+				listDep.get(i).setVisible(false);
+			}
+		}
 	}
 }
