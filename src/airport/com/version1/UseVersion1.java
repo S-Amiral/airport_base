@@ -6,7 +6,6 @@
 
 package airport.com.version1;
 
-
 public class UseVersion1 {
 
 	static String[] codePlane = { "3B147", "B3291", "6B239", "B1086", "780B4", "32A64", "17A69", "2A431", "647B8",
@@ -22,20 +21,20 @@ public class UseVersion1 {
 		int nbPisteDep = 2;// "" de depart
 		int nbPlace = 4; // parking
 
-		AirportFrame airportFrame = new AirportFrame(nbPisteArr, nbPisteDep, nbPlace, nbAvion);
+		AirportFramePersonnal airportFrame = new AirportFramePersonnal(nbPisteArr, nbPisteDep, nbPlace, nbAvion);
 
 		/**
 		 * Tampon personnel
 		 */
-        CircularBuffer_I<Avion> airArr = new CircularBuffer(nbAvion);
-        CircularBuffer_I<Avion> tarmacLand = new CircularBuffer(nbPisteArr);
-        CircularBuffer_I<Avion> tarmacTakeOff = new CircularBuffer(nbPisteDep);
-        CircularBuffer_I<Avion> terminal = new CircularBuffer(nbPlace);
-        CircularBuffer_I<Avion> airDep = new CircularBuffer(nbAvion);
+        CircularBuffer_I<AvionPersonnal> airArr = new CircularBuffer(nbAvion);
+        CircularBuffer_I<AvionPersonnal> tarmacLand = new CircularBuffer(nbPisteArr);
+        CircularBuffer_I<AvionPersonnal> tarmacTakeOff = new CircularBuffer(nbPisteDep);
+        CircularBuffer_I<AvionPersonnal> terminal = new CircularBuffer(nbPlace);
+        CircularBuffer_I<AvionPersonnal> airDep = new CircularBuffer(nbAvion);
 
 
 		for (int i = 0; i < nbAvion; i++) {
-			Avion avion = new Avion(airportFrame, codePlane[i], airArr, tarmacLand, tarmacTakeOff, terminal, airDep,
+			AvionPersonnal avion = new AvionPersonnal(airportFrame, codePlane[i], airArr, tarmacLand, tarmacTakeOff, terminal, airDep,
 					nbAvion, nbPisteArr, nbPisteDep, nbPlace);
 			new Thread(avion).start();
 		}

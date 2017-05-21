@@ -1,31 +1,28 @@
-package airport.com.version1;
+package airport.com.version2;
 
-import airport.com.version1.AirportFrame;
 import airport.com.Tools;
+import java.util.concurrent.BlockingQueue;
 
-public class Avion implements Runnable {
+public class AvionBlockingQueue implements Runnable {
 
-	private AirportFrame airportFrame;
+	private AirportFrameBlockingQueue airportFrame;
 	private String codePlane;
 
-	//version personnalisée
-	private CircularBuffer_I<Avion> airArr;
-	private CircularBuffer_I<Avion> tarmacLand;
-	private CircularBuffer_I<Avion> tarmacTakeOff;
-	private CircularBuffer_I<Avion> terminal;
-	private CircularBuffer_I<Avion> airDep;
+	// version Java
+	private BlockingQueue<AvionBlockingQueue> airArr;
+	private BlockingQueue<AvionBlockingQueue> tarmacLand;
+	private BlockingQueue<AvionBlockingQueue> tarmacTakeOff;
+	private BlockingQueue<AvionBlockingQueue> terminal;
+	private BlockingQueue<AvionBlockingQueue> airDep;
 
 	private int nbAvion;
 	private int nbPisteArr;
 	private int nbPisteDep;
 	private int nbPlace;
 
-	private int position;
-
-
-	public Avion(AirportFrame _airportFrame, String _codePlane, CircularBuffer_I<Avion> _airArr,
-                 CircularBuffer_I<Avion> _tarmacLand, CircularBuffer_I<Avion> _tarmacTakeOff, CircularBuffer_I<Avion> _terminal,
-                 CircularBuffer_I<Avion> _airDep, int _nbAvion, int _nbPisteArr, int _nbPisteDep, int _nbPlace) {
+	public AvionBlockingQueue(AirportFrameBlockingQueue _airportFrame, String _codePlane, BlockingQueue<AvionBlockingQueue> _airArr,
+			BlockingQueue<AvionBlockingQueue> _tarmacLand, BlockingQueue<AvionBlockingQueue> _tarmacTakeOff, BlockingQueue<AvionBlockingQueue> _terminal,
+			BlockingQueue<AvionBlockingQueue> _airDep, int _nbAvion, int _nbPisteArr, int _nbPisteDep, int _nbPlace) {
 		airportFrame = _airportFrame;
 		codePlane = _codePlane;
 
@@ -46,10 +43,7 @@ public class Avion implements Runnable {
 		return codePlane;
 	}
 
-	/**
-	 * Faire deux version Version 1 -> utilisation de la blockingQueue Version 2
-	 * -> utilisation de la version personnaliser
-	 */
+	
 	@Override
 	public void run() {
 		runVersionBlockingQueue();
@@ -61,14 +55,14 @@ public class Avion implements Runnable {
 			// Initialisation de l'avion dans l'air
 			airArr.put(this);
 
-			// Mise � jour de l'affichage du nombre d'avion en l'air
+			// Mise � jour de l'affichage du nombre d'avion en l'aire
 			airportFrame.arrive(this);
 
 			Tools.simulateTime(Tools.TEST_TIME);
 
 			// L'avion arrive sur le tarmac d'atterissage
 			tarmacLand.put(this);
-			airArr.remove();
+			airArr.remove(this);
 
 			// Mise � jour de l'affichage du nombre d'avion en l'air et sur le
 			// tarmac d'arriv�
@@ -78,7 +72,7 @@ public class Avion implements Runnable {
 
 			// L'avion se gare au terminal
 			terminal.put(this);
-			tarmacLand.remove();
+			tarmacLand.remove(this);
 
 			// Mise � jour de l'affichage du nombre d'avion sur le tarmac
 			// d'arriv� et sur le parking
@@ -88,7 +82,7 @@ public class Avion implements Runnable {
 
 			// L'avion arrive sur le tarmac de d�collage
 			tarmacTakeOff.put(this);
-			terminal.remove();
+			terminal.remove(this);
 
 			// Mise � jour de l'affichage du nombre d'avion sur le parking et
 			// sur le tarmac de sortie
@@ -98,7 +92,7 @@ public class Avion implements Runnable {
 
 			// L'avion arrive sur le tarmac de d�collage
 			airDep.put(this);
-			tarmacTakeOff.remove();
+			tarmacTakeOff.remove(this);
 
 			// Mise � jour de l'affichage du nombre d'avion sur le parking et
 			// sur le tarmac de sortie
@@ -107,13 +101,9 @@ public class Avion implements Runnable {
 			Tools.simulateTime(Tools.TEST_TIME);
 
 		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-	}
-
-	// Version avec tampon personnel
-	private void runVersionPersonnalBuffer() {
 
 	}
 }

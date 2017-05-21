@@ -1,25 +1,32 @@
-package airport.com.version1;
-
+package airport.com.version2;
 
 import airport.com.Tools;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 @SuppressWarnings("ALL")
-public class AirportFrame extends JFrame {
+public class AirportFrameBlockingQueue extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	// liste d'avion � chaque endroits
-	private List<Avion> avionOnAirArray;
-	private List<Avion> avionLandingArray;
-	private List<Avion> avionTermArray;
-	private List<Avion> avionTakeOffArray;
-	private List<Avion> avionOnAirLeaveArray;
+	private List<AvionBlockingQueue> avionOnAirArray;
+	private List<AvionBlockingQueue> avionLandingArray;
+	private List<AvionBlockingQueue> avionTermArray;
+	private List<AvionBlockingQueue> avionTakeOffArray;
+	private List<AvionBlockingQueue> avionOnAirLeaveArray;
 
 	// images d'avion
 	public ArrayList<JLabel> listTerm;
@@ -36,21 +43,21 @@ public class AirportFrame extends JFrame {
 	private int nbPisteDep;
 	private int nbPlace;
 
-	public Boolean isOpen; //condition de test pour l'ouverture et la fermeture de l'aéroport
+	public Boolean isOpen; // condition de test pour l'ouverture et la fermeture
+							// de l'aéroport
 
-	public AirportFrame(int _nbPisteArr, int _nbPisteDep, int _nbPlace, int _nbAvion) {
+	public AirportFrameBlockingQueue(int _nbPisteArr, int _nbPisteDep, int _nbPlace, int _nbAvion) {
 		nbPisteArr = _nbPisteArr;
 		nbPisteDep = _nbPisteDep;
 		nbPlace = _nbPlace;
 
-		isOpen = false;
+		isOpen = true;
 
-
-		avionOnAirArray = new ArrayList<Avion>();
-		avionLandingArray = new ArrayList<Avion>();
-		avionTermArray = new ArrayList<Avion>();
-		avionTakeOffArray = new ArrayList<Avion>();
-		avionOnAirLeaveArray = new ArrayList<Avion>();
+		avionOnAirArray = new ArrayList<AvionBlockingQueue>();
+		avionLandingArray = new ArrayList<AvionBlockingQueue>();
+		avionTermArray = new ArrayList<AvionBlockingQueue>();
+		avionTakeOffArray = new ArrayList<AvionBlockingQueue>();
+		avionOnAirLeaveArray = new ArrayList<AvionBlockingQueue>();
 
 		listArr = new ArrayList<JLabel>();
 		listTerm = new ArrayList<JLabel>();
@@ -136,36 +143,43 @@ public class AirportFrame extends JFrame {
 		JButton buttonStart = new JButton("Start");
 		start.add(buttonStart);
 
-        /**
-         * On débloque tous les avions en attente
-         */
+		JButton buttonStop = new JButton("Stop");
+		stop.add(buttonStop);
+
+		/**
+		 * On débloque tous les avions en attente
+		 */
 		buttonStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("the airport is isOpen now ! ");
-				synchronized (AirportFrame.this){
-					AirportFrame.this.isOpen = true;
-					AirportFrame.this.notifyAll(); // on reveille tous les avions qui "dorment"
+				synchronized (AirportFrameBlockingQueue.this) {
+					AirportFrameBlockingQueue.this.isOpen = true;
+					AirportFrameBlockingQueue.this.notifyAll(); // on reveille tous les
+													// avions qui "dorment"
+					buttonStart.setEnabled(false);
+					buttonStop.setEnabled(true);
 				}
 
-            }
+			}
 		});
 
-		JButton buttonStop = new JButton("Stop");
-		stop.add(buttonStop);
 		buttonStop.addActionListener(new ActionListener() {
 
-            /**
-             * Blocage complet de l'aéroport
-             * @param e
-             */
+			/**
+			 * Blocage complet de l'aéroport
+			 * 
+			 * @param e
+			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("sorry the airport is close");
-				synchronized (AirportFrame.this) {
-                    AirportFrame.this.isOpen = false;
-                }
-            }
+				synchronized (AirportFrameBlockingQueue.this) {
+					AirportFrameBlockingQueue.this.isOpen = false;
+					buttonStop.setEnabled(false);
+					buttonStart.setEnabled(true);
+				}
+			}
 		});
 
 		bouton.add(start);
@@ -173,31 +187,34 @@ public class AirportFrame extends JFrame {
 		panel.add(bouton, BorderLayout.EAST);
 
 		this.getContentPane().add(panel);
-        this.setTitle("Version 1 - Circular buffer");
+		this.setTitle("Version 2 - Blocking queue");
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
-    /**
-     * Gestion des avions qui veulent attérir
-     * @param avion
-     * @throws InterruptedException
-     */
-	public synchronized void arrive(Avion avion) throws InterruptedException {
-	    while(!isOpen){
-	        wait();
-        }
+	/**
+	 * Gestion des avions qui veulent attérir
+	 * 
+	 * @param avion
+	 * @throws InterruptedException
+	 */
+	public synchronized void arrive(AvionBlockingQueue avion) throws InterruptedException {
+		while (!isOpen) {
+			wait();
+		}
 		avionOnAirArray.add(avion);
 		nbOnAirLabel.setText("" + avionOnAirArray.size());
 	}
 
-    /**
-     * Gestion des avions sur la piste d'attérissage
-     * @param avion
-     * @throws InterruptedException
-     */
-	public synchronized void land(Avion avion) throws InterruptedException {
-        while(!isOpen){
-            wait();
-        }
+	/**
+	 * Gestion des avions sur la piste d'attérissage
+	 * 
+	 * @param avion
+	 * @throws InterruptedException
+	 */
+	public synchronized void land(AvionBlockingQueue avion) throws InterruptedException {
+		while (!isOpen) {
+			wait();
+		}
 		avionOnAirArray.remove(avion);
 		nbOnAirLabel.setText("" + avionOnAirArray.size());
 
@@ -208,15 +225,16 @@ public class AirportFrame extends JFrame {
 		updateLandingImage();
 	}
 
-    /**
-     * Gestion du parkings des avions
-     * @param avion
-     * @throws InterruptedException
-     */
-	public synchronized void park(Avion avion) throws InterruptedException {
-        while(!isOpen){
-            wait();
-        }
+	/**
+	 * Gestion du parkings des avions
+	 * 
+	 * @param avion
+	 * @throws InterruptedException
+	 */
+	public synchronized void park(AvionBlockingQueue avion) throws InterruptedException {
+		while (!isOpen) {
+			wait();
+		}
 		avionLandingArray.remove(avion);
 		nbLandingLabel.setText("" + avionLandingArray.size());
 
@@ -227,15 +245,16 @@ public class AirportFrame extends JFrame {
 		updateParkingImage();
 	}
 
-    /**
-     * Gestion des avions qui décolle
-     * @param avion
-     * @throws InterruptedException
-     */
-	public synchronized void takeOff(Avion avion) throws InterruptedException {
-        while(!isOpen){
-            wait();
-        }
+	/**
+	 * Gestion des avions qui décolle
+	 * 
+	 * @param avion
+	 * @throws InterruptedException
+	 */
+	public synchronized void takeOff(AvionBlockingQueue avion) throws InterruptedException {
+		while (!isOpen) {
+			wait();
+		}
 		avionTermArray.remove(avion);
 		nbTermLabel.setText("" + avionTermArray.size());
 
@@ -246,15 +265,16 @@ public class AirportFrame extends JFrame {
 		updateTakeOffImage();
 	}
 
-    /**
-     * Gestion des avions qui sont en l'aire
-     * @param avion
-     * @throws InterruptedException
-     */
-	public synchronized void depart(Avion avion) throws InterruptedException {
-        while(!isOpen){
-            wait();
-        }
+	/**
+	 * Gestion des avions qui sont en l'aire
+	 * 
+	 * @param avion
+	 * @throws InterruptedException
+	 */
+	public synchronized void depart(AvionBlockingQueue avion) throws InterruptedException {
+		while (!isOpen) {
+			wait();
+		}
 		avionTakeOffArray.remove(avion);
 		nbTakeOffLabel.setText("" + avionTakeOffArray.size());
 

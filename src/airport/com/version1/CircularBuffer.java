@@ -1,17 +1,17 @@
 package airport.com.version1;
 
-import airport.com.version1.Avion;
+import airport.com.version1.AvionPersonnal;
 
 /**
  * Created by johnny.dacosta on 15/05/2017.
  */
-public class CircularBuffer implements CircularBuffer_I<Avion> {
+public class CircularBuffer implements CircularBuffer_I<AvionPersonnal> {
 
     /**
      * Attribut of the class
      */
     private final int max; //buffer size;
-    private final Avion[] data; //buffer who contain the data
+    private final AvionPersonnal[] data; //buffer who contain the data
     private int in = 0; //cursor for the producer
     private int out = 0; //cursor for the consumer
     private int nbMsg = 0; /* Space available in the buffer */
@@ -22,7 +22,7 @@ public class CircularBuffer implements CircularBuffer_I<Avion> {
      */
     public CircularBuffer(int max) {
         this.max = max;
-        this.data = new Avion[max];
+        this.data = new AvionPersonnal[max];
     }
 
     /**
@@ -30,7 +30,7 @@ public class CircularBuffer implements CircularBuffer_I<Avion> {
      * @param element
      */
     @Override
-    public synchronized void put(Avion element) {
+    public synchronized void put(AvionPersonnal element) {
         while(nbMsg == this.max){ //until the buffered is full we still waiting
             try {
                 wait();
@@ -51,7 +51,7 @@ public class CircularBuffer implements CircularBuffer_I<Avion> {
      * @return Avion element
      */
     @Override
-    public synchronized Avion remove() {
+    public synchronized AvionPersonnal remove() {
         while(nbMsg == 0){ //until they are not message we still waiting
             try {
                 wait();
@@ -60,7 +60,7 @@ public class CircularBuffer implements CircularBuffer_I<Avion> {
                 e.printStackTrace();
             }
         }
-        Avion el = this.data[this.out];    //we take element from the buffer
+        AvionPersonnal el = this.data[this.out];    //we take element from the buffer
         this.out = mod(this.out);           //we udpate the modulo size
         this.nbMsg--;
         notifyAll();                           //we notify that we take an element

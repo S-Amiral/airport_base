@@ -9,6 +9,8 @@ package airport.com.version2;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+
+
 public class UseVersion2 {
 
 	static String[] codePlane = { "3B147", "B3291", "6B239", "B1086", "780B4", "32A64", "17A69", "2A431", "647B8",
@@ -17,32 +19,28 @@ public class UseVersion2 {
 			"0718B", "80B21", "0A369", "5290A", "370B4", "021A3", "84A02", "052A6", "B6350", "630B5", "8B903", "1398B",
 			"2693A", "902A6", "51A20", "971A5", "A7891" };
 
-
 	public static void main(String[] args) {
 		int nbAvion = 20; // nombre d'avion
 		int nbPisteArr = 5;// pistes d'atterrisage
 		int nbPisteDep = 2;// "" de depart
 		int nbPlace = 4; // parking
 
-		AirportFrame airportFrame = new AirportFrame(nbPisteArr, nbPisteDep, nbPlace, nbAvion);
+		AirportFrameBlockingQueue airportFrame = new AirportFrameBlockingQueue(nbPisteArr, nbPisteDep, nbPlace, nbAvion);
 
 		/**
-		 * première version
+		 * Version Blocking Queue
 		 */
-		BlockingQueue<Avion> airArr = new ArrayBlockingQueue<Avion>(nbAvion);
-		BlockingQueue<Avion> tarmacLand = new ArrayBlockingQueue<Avion>(nbPisteArr);
-		BlockingQueue<Avion> tarmacTakeOff = new ArrayBlockingQueue<Avion>(nbPisteDep);
-		BlockingQueue<Avion> terminal = new ArrayBlockingQueue<Avion>(nbPlace);
-		BlockingQueue<Avion> airDep = new ArrayBlockingQueue<Avion>(nbAvion);
-
+		BlockingQueue<AvionBlockingQueue> airArr = new ArrayBlockingQueue<AvionBlockingQueue>(nbAvion);
+		BlockingQueue<AvionBlockingQueue> tarmacLand = new ArrayBlockingQueue<AvionBlockingQueue>(nbPisteArr);
+		BlockingQueue<AvionBlockingQueue> tarmacTakeOff = new ArrayBlockingQueue<AvionBlockingQueue>(nbPisteDep);
+		BlockingQueue<AvionBlockingQueue> terminal = new ArrayBlockingQueue<AvionBlockingQueue>(nbPlace);
+		BlockingQueue<AvionBlockingQueue> airDep = new ArrayBlockingQueue<AvionBlockingQueue>(nbAvion);
 
 		for (int i = 0; i < nbAvion; i++) {
-			Avion avion = new Avion(airportFrame, codePlane[i], airArr, tarmacLand, tarmacTakeOff, terminal, airDep,
+			AvionBlockingQueue avion = new AvionBlockingQueue(airportFrame, codePlane[i], airArr, tarmacLand, tarmacTakeOff, terminal, airDep,
 					nbAvion, nbPisteArr, nbPisteDep, nbPlace);
 			new Thread(avion).start();
 		}
-
-
 
 		airportFrame.setVisible(true);
 		airportFrame.pack();
