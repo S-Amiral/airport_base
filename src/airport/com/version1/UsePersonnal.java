@@ -34,7 +34,7 @@ public class UsePersonnal {
                 ConfigPersonnal.nbPisteDep = jFrameConfig.getPisteDepSpinner();// "" de depart
                 nbPlace = jFrameConfig.getPlaceSpinner(); // parking
 
-
+                jFrameConfig.setVisible(false);
                 AirportFramePersonnal airportFrame = new AirportFramePersonnal(ConfigPersonnal.nbPisteArr, ConfigPersonnal.nbPisteDep, nbPlace, ConfigPersonnal.nbAvion);
 
                 /**
@@ -46,7 +46,7 @@ public class UsePersonnal {
                 CircularBuffer_I<AvionPersonnal> terminal = new CircularBuffer(nbPlace);
                 CircularBuffer_I<AvionPersonnal> airDep = new CircularBuffer(ConfigPersonnal.nbAvion);
 
-
+                System.out.println(codePlane.length);
                 for (int i = 0; i < ConfigPersonnal.nbAvion; i++) {
                     AvionPersonnal avion = new AvionPersonnal(airportFrame, codePlane[i], airArr, tarmacLand, tarmacTakeOff, terminal, airDep,
                             ConfigPersonnal.nbAvion, ConfigPersonnal.nbPisteArr, ConfigPersonnal.nbPisteDep, nbPlace);

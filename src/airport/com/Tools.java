@@ -34,6 +34,6 @@ public class Tools {
 		}
 	}
 	
-	public static final int TEST_TIME = 2000;
+	public static final int TEST_TIME = 1000;
 
 }

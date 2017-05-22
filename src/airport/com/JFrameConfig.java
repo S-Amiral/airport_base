@@ -44,7 +44,7 @@ public class JFrameConfig extends JFrame
         pisteDepLabel = new JLabel("Nombre de piste de départ");
         placeLabel = new JLabel("Nombre de place de parking");
 
-        avionSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
+        avionSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 50, 1));
         pisteArrSpinner =  new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
         pisteDepSpinner =  new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
         placeSpinner =  new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
