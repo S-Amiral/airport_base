@@ -21,7 +21,6 @@ public class JFrameConfig extends JFrame {
 	appearance();
     }
 
-<<<<<<< HEAD
 	/*------------------------------------------------------------------*\
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
@@ -67,40 +66,6 @@ public class JFrameConfig extends JFrame {
         add(pisteDepLabel); add(pisteDepSpinner);
         add(placeLabel); add(placeSpinner);
         add(okButton);
-=======
-    private void geometry() {
-	// JComponent : Instanciation
-	avionLabel = new JLabel("Nombre d'avion : ");
-	pisteArrLabel = new JLabel("Nombre de piste d'attérissage");
-	pisteDepLabel = new JLabel("Nombre de piste de départ");
-	placeLabel = new JLabel("Nombre de place de parking");
-
-	avionSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
-	pisteArrSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
-	pisteDepSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
-	placeSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
-
-	checkFormatSpinner();
-
-	okButton = new JButton("Valider les configurations");
-
-	// Layout : Specification
-	{
-	    GridLayout gridLayout = new GridLayout(5, 2);
-	    setLayout(gridLayout);
-	}
-
-	// JComponent : add
-	add(avionLabel);
-	add(avionSpinner);
-	add(pisteArrLabel);
-	add(pisteArrSpinner);
-	add(pisteDepLabel);
-	add(pisteDepSpinner);
-	add(placeLabel);
-	add(placeSpinner);
-	add(okButton);
->>>>>>> f1ecaa19c4b69d3b972a5dd2db2b5bd5d8a5716a
     }
 
     private void checkFormatSpinner() {

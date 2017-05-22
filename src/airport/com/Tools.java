@@ -28,10 +28,7 @@ public class Tools {
 	    nh = h;
 	    nw = (icon.getIconWidth() * nh) / icon.getIconHeight();
 	}
-<<<<<<< HEAD
-	
-	public static final int TEST_TIME = 1000;
-=======
+
 	return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_DEFAULT));
     }
 
@@ -44,6 +41,5 @@ public class Tools {
     }
 
     public static final int TEST_TIME = 2000;
->>>>>>> f1ecaa19c4b69d3b972a5dd2db2b5bd5d8a5716a
 
 }
