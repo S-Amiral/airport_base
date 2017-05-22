@@ -6,6 +6,12 @@ import javax.swing.ImageIcon;
 
 public class Tools {
 
+	static int nbAvion = 0; // nombre d'avion
+	static int nbPisteArr = 0;// pistes d'atterrisage
+	static int nbPisteDep = 0;// "" de depart
+	static int nbPlace = 0; // parking
+
+
 	public static ImageIcon scaleImage(ImageIcon icon, int w, int h) {
 		int nw = icon.getIconWidth();
 		int nh = icon.getIconHeight();
