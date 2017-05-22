@@ -39,6 +39,9 @@ public class AirportFrameBlockingQueue extends JFrame {
 	public JLabel nbTakeOffLabel;
 	public JLabel nbOnAirLeaveLabel;
 
+	public JButton buttonStart;
+	public JButton buttonStop;
+
 	private int nbPisteArr;
 	private int nbPisteDep;
 	private int nbPlace;
@@ -140,10 +143,10 @@ public class AirportFrameBlockingQueue extends JFrame {
 		JPanel start = new JPanel();
 		JPanel stop = new JPanel();
 
-		JButton buttonStart = new JButton("Start");
+		buttonStart = new JButton("Start");
 		start.add(buttonStart);
 
-		JButton buttonStop = new JButton("Stop");
+		buttonStop = new JButton("Stop");
 		stop.add(buttonStop);
 
 		/**
@@ -152,11 +155,11 @@ public class AirportFrameBlockingQueue extends JFrame {
 		buttonStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("the airport is isOpen now ! ");
 				synchronized (AirportFrameBlockingQueue.this) {
 					AirportFrameBlockingQueue.this.isOpen = true;
-					AirportFrameBlockingQueue.this.notifyAll(); // on reveille tous les
-													// avions qui "dorment"
+					AirportFrameBlockingQueue.this.notifyAll(); // on reveille
+																// tous les
+					// avions qui "dorment"
 					buttonStart.setEnabled(false);
 					buttonStop.setEnabled(true);
 				}
@@ -173,7 +176,6 @@ public class AirportFrameBlockingQueue extends JFrame {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("sorry the airport is close");
 				synchronized (AirportFrameBlockingQueue.this) {
 					AirportFrameBlockingQueue.this.isOpen = false;
 					buttonStop.setEnabled(false);

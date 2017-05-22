@@ -19,21 +19,100 @@ public class RunTest {
 			"2693A", "902A6", "51A20", "971A5", "A7891" };
 
 	public static void main(String[] args) {
-		int nbAvion = 20; // nombre d'avion
-		int nbPisteArr = 5;// pistes d'atterrisage
-		int nbPisteDep = 2;// "" de depart
-		int nbPlace = 4; // parking
+		// Valeurs par défaut
+		int nbAvion = 20;
+		int nbPisteArr = 5;
+		int nbPisteDep = 2;
+		int nbPlace = 4;
 
-		testBlockingQueueVsPersonnal(nbAvion, nbPisteArr, nbPisteDep, nbPlace);
+		int nbTest = 1;
+		long somme = 0;
+		double moyenne = 0;
+
+		System.out.println("Démarrage test Blocking Queue...");
+		for (int i = 0; i < nbTest; i++) {
+			somme += testBlockingQueue(nbAvion, nbPisteArr, nbPisteDep, nbPlace);
+		}
+		moyenne = somme / nbTest;
+		System.out.println("Temps moyen blocking queue : " + moyenne);
+
+		somme = 0;
+		System.out.println("Démarrage test buffer personnel...");
+		for (int i = 0; i < nbTest; i++) {
+			somme += testPersonnalBuffer(nbAvion, nbPisteArr, nbPisteDep, nbPlace);
+		}
+		moyenne = somme / nbTest;
+		System.out.println("Temps moyen buffer personnel : " + moyenne);
+
+		System.out.println("Démarrage test variation nombre de pistes d'arrivé...");
+		int nbPistesMax = 20;
+		for (int i = 1; i <= nbPistesMax; i++) {
+			long result = testBlockingQueue(nbAvion, i, nbPisteDep, nbPlace);
+			System.out.println("Nb piste : " + i + " temps : " + result);
+		}
+		System.out.println("Fin test variation nombre de pistes d'arrivé !");
+
+		System.out.println("Démarrage test variation nombre de pistes de départ...");
+		nbPistesMax = 20;
+		for (int i = 1; i <= nbPistesMax; i++) {
+			long result = testBlockingQueue(nbAvion, nbPisteArr, i, nbPlace);
+			System.out.println("Nb piste : " + i + " temps : " + result);
+		}
+		System.out.println("Fin test variation nombre de pistes de départ !");
+
+		System.out.println("Démarrage test variation nombre de place dans le parking...");
+		int nbPlaceMax = 20;
+		for (int i = 1; i <= nbPlaceMax; i++) {
+			long result = testBlockingQueue(nbAvion, nbPisteArr, nbPisteDep, i);
+			System.out.println("Nb place : " + i + " temps : " + result);
+		}
+		System.out.println("Fin test variation nombre de place dans le parking !");
 	}
 
-	private static void testBlockingQueueVsPersonnal(int nbAvion, int nbPisteArr, int nbPisteDep, int nbPlace) {
-		System.out.println("Démarrage test Blocking Queue vs Personnal");
+	/**
+	 * Version Blocking Queue
+	 */
+	private static long testBlockingQueue(int nbAvion, int nbPisteArr, int nbPisteDep, int nbPlace) {
+		AirportFrameBlockingQueue airportFrame = new AirportFrameBlockingQueue(nbPisteArr, nbPisteDep, nbPlace,
+				nbAvion);
 
-		/**
-		 * Tampon personnel
-		 */
+		BlockingQueue<AvionBlockingQueue> airArr1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbAvion);
+		BlockingQueue<AvionBlockingQueue> tarmacLand1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbPisteArr);
+		BlockingQueue<AvionBlockingQueue> tarmacTakeOff1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbPisteDep);
+		BlockingQueue<AvionBlockingQueue> terminal1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbPlace);
+		BlockingQueue<AvionBlockingQueue> airDep1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbAvion);
 
+		Thread[] tabThread = new Thread[nbAvion];
+
+		for (int i = 0; i < nbAvion; i++) {
+			AvionBlockingQueue avion = new AvionBlockingQueue(airportFrame, codePlane[i], airArr1, tarmacLand1,
+					tarmacTakeOff1, terminal1, airDep1, nbAvion, nbPisteArr, nbPisteDep, nbPlace);
+			tabThread[i] = new Thread(avion);
+			tabThread[i].start();
+		}
+
+		// Start timer
+		long start = System.currentTimeMillis();
+		airportFrame.buttonStart.doClick();
+
+		for (int i = 0; i < nbAvion; i++) {
+			try {
+				tabThread[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// Stop timer
+		long result = System.currentTimeMillis() - start;
+		return result;
+
+	}
+
+	/**
+	 * Tampon personnel
+	 */
+	private static long testPersonnalBuffer(int nbAvion, int nbPisteArr, int nbPisteDep, int nbPlace) {
 		AirportFramePersonnal airportFrame = new AirportFramePersonnal(nbPisteArr, nbPisteDep, nbPlace, nbAvion);
 
 		CircularBuffer_I<AvionPersonnal> airArr = new CircularBuffer(nbAvion);
@@ -51,9 +130,6 @@ public class RunTest {
 			tabThread[i].start();
 		}
 
-		airportFrame.setVisible(true);
-		airportFrame.pack();
-
 		// Start timer
 		long start = System.currentTimeMillis();
 		airportFrame.buttonStart.doClick();
@@ -68,48 +144,6 @@ public class RunTest {
 
 		// Stop timer
 		long result = System.currentTimeMillis() - start;
-		System.out.println("Resultat buffer personnel : " + result);
-
-		/**
-		 * Version Blocking Queue
-		 */
-
-		AirportFrameBlockingQueue airportFrame1 = new AirportFrameBlockingQueue(nbPisteArr, nbPisteDep, nbPlace,
-				nbAvion);
-
-		BlockingQueue<AvionBlockingQueue> airArr1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbAvion);
-		BlockingQueue<AvionBlockingQueue> tarmacLand1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbPisteArr);
-		BlockingQueue<AvionBlockingQueue> tarmacTakeOff1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbPisteDep);
-		BlockingQueue<AvionBlockingQueue> terminal1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbPlace);
-		BlockingQueue<AvionBlockingQueue> airDep1 = new ArrayBlockingQueue<AvionBlockingQueue>(nbAvion);
-
-		tabThread = new Thread[nbAvion];
-
-		for (int i = 0; i < nbAvion; i++) {
-			AvionBlockingQueue avion = new AvionBlockingQueue(airportFrame1, codePlane[i], airArr1, tarmacLand1,
-					tarmacTakeOff1, terminal1, airDep1, nbAvion, nbPisteArr, nbPisteDep, nbPlace);
-			tabThread[i] = new Thread(avion);
-			tabThread[i].start();
-		}
-
-		airportFrame1.setVisible(true);
-		airportFrame1.pack();
-
-		// Start timer
-		start = System.currentTimeMillis();
-		airportFrame.buttonStart.doClick();
-
-		for (int i = 0; i < nbAvion; i++) {
-			try {
-				tabThread[i].join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		// Stop timer
-		result = System.currentTimeMillis() - start;
-		System.out.println("Resultat Blocking Queue : " + result);
-
+		return result;
 	}
 }

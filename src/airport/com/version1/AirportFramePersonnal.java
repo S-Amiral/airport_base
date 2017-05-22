@@ -30,7 +30,7 @@ public class AirportFramePersonnal extends JFrame {
 	public JLabel nbTermLabel;
 	public JLabel nbTakeOffLabel;
 	public JLabel nbOnAirLeaveLabel;
-	
+
 	public JButton buttonStart;
 	public JButton buttonStop;
 
@@ -147,11 +147,11 @@ public class AirportFramePersonnal extends JFrame {
 		buttonStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("the airport is isOpen now ! ");
 				synchronized (AirportFramePersonnal.this) {
 					AirportFramePersonnal.this.isOpen = true;
-					AirportFramePersonnal.this.notifyAll(); // on reveille tous les
-													// avions qui "dorment"
+					AirportFramePersonnal.this.notifyAll(); // on reveille tous
+															// les
+					// avions qui "dorment"
 					buttonStart.setEnabled(false);
 					buttonStop.setEnabled(true);
 				}
@@ -168,7 +168,6 @@ public class AirportFramePersonnal extends JFrame {
 			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("sorry the airport is close");
 				synchronized (AirportFramePersonnal.this) {
 					AirportFramePersonnal.this.isOpen = false;
 					buttonStop.setEnabled(false);
