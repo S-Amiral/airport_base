@@ -1,7 +1,7 @@
 /******************************************************************
  * Axel Rieben & Johnny Da Costa
  * Programmation concurrente : laboratoire 3
- * 28 mai 2017
+ * 23 mai 2017
  ******************************************************************/
 
 package airport.com.version2;
@@ -14,17 +14,12 @@ public class AvionBlockingQueue implements Runnable {
     private AirportFrameBlockingQueue airportFrame;
     private String codePlane;
 
-    // version Java
+    // version Java blocking queue
     private BlockingQueue<AvionBlockingQueue> airArr;
     private BlockingQueue<AvionBlockingQueue> tarmacLand;
     private BlockingQueue<AvionBlockingQueue> tarmacTakeOff;
     private BlockingQueue<AvionBlockingQueue> terminal;
     private BlockingQueue<AvionBlockingQueue> airDep;
-
-    private int nbAvion;
-    private int nbPisteArr;
-    private int nbPisteDep;
-    private int nbPlace;
 
     public AvionBlockingQueue(AirportFrameBlockingQueue _airportFrame, String _codePlane,
 	    BlockingQueue<AvionBlockingQueue> _airArr, BlockingQueue<AvionBlockingQueue> _tarmacLand,
@@ -38,12 +33,6 @@ public class AvionBlockingQueue implements Runnable {
 	tarmacTakeOff = _tarmacTakeOff;
 	terminal = _terminal;
 	airDep = _airDep;
-
-	nbAvion = _nbAvion;
-	nbPisteArr = _nbPisteArr;
-	nbPisteDep = _nbPisteDep;
-	nbPlace = _nbPlace;
-
     }
 
     public String getCode() {

@@ -1,7 +1,7 @@
 /******************************************************************
  * Axel Rieben & Johnny Da Costa
  * Programmation concurrente : laboratoire 3
- * 28 mai 2017
+ * 23 mai 2017
  ******************************************************************/
 
 package airport.com.version1;
@@ -20,11 +20,6 @@ public class AvionPersonnal implements Runnable {
     private CircularBuffer_I<AvionPersonnal> terminal;
     private CircularBuffer_I<AvionPersonnal> airDep;
 
-    private int nbAvion;
-    private int nbPisteArr;
-    private int nbPisteDep;
-    private int nbPlace;
-
     public AvionPersonnal(AirportFramePersonnal _airportFrame, String _codePlane,
 	    CircularBuffer_I<AvionPersonnal> _airArr, CircularBuffer_I<AvionPersonnal> _tarmacLand,
 	    CircularBuffer_I<AvionPersonnal> _tarmacTakeOff, CircularBuffer_I<AvionPersonnal> _terminal,
@@ -37,12 +32,6 @@ public class AvionPersonnal implements Runnable {
 	tarmacTakeOff = _tarmacTakeOff;
 	terminal = _terminal;
 	airDep = _airDep;
-
-	nbAvion = _nbAvion;
-	nbPisteArr = _nbPisteArr;
-	nbPisteDep = _nbPisteDep;
-	nbPlace = _nbPlace;
-
     }
 
     public String getCode() {

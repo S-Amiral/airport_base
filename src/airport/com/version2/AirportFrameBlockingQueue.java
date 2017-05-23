@@ -1,7 +1,7 @@
 /******************************************************************
  * Axel Rieben & Johnny Da Costa
  * Programmation concurrente : laboratoire 3
- * 28 mai 2017
+ * 23 mai 2017
  ******************************************************************/
 
 package airport.com.version2;
@@ -59,7 +59,7 @@ public class AirportFrameBlockingQueue extends JFrame {
 	nbPisteDep = _nbPisteDep;
 	nbPlace = _nbPlace;
 
-	isOpen = true;
+	isOpen = false;
 
 	avionOnAirArray = new ArrayList<AvionBlockingQueue>();
 	avionLandingArray = new ArrayList<AvionBlockingQueue>();
@@ -90,6 +90,7 @@ public class AirportFrameBlockingQueue extends JFrame {
 	    landPanel.add(imgLandingLabel);
 	    landPanel.add(new JLabel("", Tools.scaleImage(imgRoad, 50, 50), JLabel.CENTER));
 	}
+
 	landPanel.add(new JLabel());
 	landPanel.add(nbLandingLabel);
 	airportPanel.add(landPanel);
@@ -114,6 +115,7 @@ public class AirportFrameBlockingQueue extends JFrame {
 	    takeOffPanel.add(new JLabel("", Tools.scaleImage(imgRoad, 50, 50), JLabel.CENTER));
 	    takeOffPanel.add(imgTakeOffLabel);
 	}
+
 	takeOffPanel.add(nbTakeOffLabel);
 	airportPanel.add(takeOffPanel);
 
@@ -152,6 +154,7 @@ public class AirportFrameBlockingQueue extends JFrame {
 	start.add(buttonStart);
 
 	buttonStop = new JButton("Stop");
+	buttonStop.setEnabled(false);
 	stop.add(buttonStop);
 
 	/**
@@ -172,13 +175,13 @@ public class AirportFrameBlockingQueue extends JFrame {
 	    }
 	});
 
+	/**
+	 * Blocage complet de l'aéroport
+	 * 
+	 * @param e
+	 */
 	buttonStop.addActionListener(new ActionListener() {
 
-	    /**
-	     * Blocage complet de l'aéroport
-	     * 
-	     * @param e
-	     */
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		synchronized (AirportFrameBlockingQueue.this) {

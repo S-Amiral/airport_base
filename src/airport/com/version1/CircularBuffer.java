@@ -1,7 +1,7 @@
 /******************************************************************
  * Axel Rieben & Johnny Da Costa
  * Programmation concurrente : laboratoire 3
- * 28 mai 2017
+ * 23 mai 2017
  ******************************************************************/
 
 package airport.com.version1;
@@ -58,7 +58,7 @@ public class CircularBuffer implements CircularBuffer_I<AvionPersonnal> {
      */
     @Override
     public synchronized AvionPersonnal remove() {
-	while (nbMsg == 0) { //tant qu'il n'y pas de message on attend
+	while (nbMsg == 0) { // tant qu'il n'y pas de message on attend
 	    try {
 		wait();
 	    } catch (InterruptedException e) {

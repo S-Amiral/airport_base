@@ -1,7 +1,7 @@
 /******************************************************************
  * Axel Rieben & Johnny Da Costa
  * Programmation concurrente : laboratoire 3
- * 28 mai 2017
+ * 23 mai 2017
  ******************************************************************/
 
 package airport.com.version2;
@@ -24,6 +24,7 @@ public class UseBlockingQueue {
     public static void main(String[] args) {
 
 	JFrameConfig jFrameConfig = new JFrameConfig();
+
 	jFrameConfig.getOkButton().addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
@@ -32,9 +33,10 @@ public class UseBlockingQueue {
 		ConfigBlockingQueue.nbPisteDep = jFrameConfig.getPisteDepSpinner();// "" de depart
 		ConfigBlockingQueue.nbPlace = jFrameConfig.getPlaceSpinner(); // parking
 
+		jFrameConfig.setVisible(false);
+		
 		AirportFrameBlockingQueue airportFrame = new AirportFrameBlockingQueue(ConfigBlockingQueue.nbPisteArr,
 			ConfigBlockingQueue.nbPisteDep, ConfigBlockingQueue.nbPlace, ConfigBlockingQueue.nbAvion);
-		jFrameConfig.setVisible(false);
 
 		/**
 		 * Version Blocking Queue

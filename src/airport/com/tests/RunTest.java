@@ -18,6 +18,9 @@ public class RunTest {
 	    "0718B", "80B21", "0A369", "5290A", "370B4", "021A3", "84A02", "052A6", "B6350", "630B5", "8B903", "1398B",
 	    "2693A", "902A6", "51A20", "971A5", "A7891" };
 
+    /**
+     * Classe de test
+     */
     public static void main(String[] args) {
 	// Valeurs par défaut
 	int nbAvion = 20;
@@ -25,7 +28,7 @@ public class RunTest {
 	int nbPisteDep = 2;
 	int nbPlace = 4;
 
-	int nbTest = 1;
+	int nbTest = 1; //nombre d'itération pour un test
 	long somme = 0;
 	double moyenne = 0;
 

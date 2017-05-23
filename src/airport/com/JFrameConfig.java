@@ -1,19 +1,24 @@
 /******************************************************************
  * Axel Rieben & Johnny Da Costa
  * Programmation concurrente : laboratoire 3
- * 28 mai 2017
+ * 23 mai 2017
  ******************************************************************/
 
 package airport.com;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.GridLayout;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.text.NumberFormatter;
 
 public class JFrameConfig extends JFrame {
+
+    private static final long serialVersionUID = 1L;
 
     public JFrameConfig() {
 	geometry();
@@ -21,51 +26,38 @@ public class JFrameConfig extends JFrame {
 	appearance();
     }
 
-	/*------------------------------------------------------------------*\
-	|*							Methodes Public							*|
-	\*------------------------------------------------------------------*/
+    private void geometry() {
+	// JComponent : Instanciation
+	avionLabel = new JLabel("Nombre d'avion : ");
+	pisteArrLabel = new JLabel("Nombre de piste d'attérissage");
+	pisteDepLabel = new JLabel("Nombre de piste de départ");
+	placeLabel = new JLabel("Nombre de place de parking");
 
-	/*------------------------------*\
-	|*				Set				*|
-	\*------------------------------*/
+	avionSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 50, 1));
+	pisteArrSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
+	pisteDepSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
+	placeSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
 
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
+	checkFormatSpinner();
 
-	/*------------------------------------------------------------------*\
-	|*							Methodes Private						*|
-	\*------------------------------------------------------------------*/
+	okButton = new JButton("Valider les configurations");
 
-    private void geometry()
-    {
-        // JComponent : Instanciation
-        avionLabel = new JLabel("Nombre d'avion : ");
-        pisteArrLabel = new JLabel("Nombre de piste d'attérissage");
-        pisteDepLabel = new JLabel("Nombre de piste de départ");
-        placeLabel = new JLabel("Nombre de place de parking");
+	// Layout : Specification
+	{
+	    GridLayout gridLayout = new GridLayout(5, 2);
+	    setLayout(gridLayout);
+	}
 
-        avionSpinner = new JSpinner(new SpinnerNumberModel(2, 2, 50, 1));
-        pisteArrSpinner =  new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
-        pisteDepSpinner =  new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
-        placeSpinner =  new JSpinner(new SpinnerNumberModel(2, 2, 100, 1));
-
-        checkFormatSpinner();
-
-        okButton = new JButton("Valider les configurations");
-
-        // Layout : Specification
-        {
-            GridLayout gridLayout = new GridLayout(5, 2);
-            setLayout(gridLayout);
-        }
-
-        // JComponent : add
-        add(avionLabel); add(avionSpinner);
-        add(pisteArrLabel); add(pisteArrSpinner);
-        add(pisteDepLabel); add(pisteDepSpinner);
-        add(placeLabel); add(placeSpinner);
-        add(okButton);
+	// JComponent : add
+	add(avionLabel);
+	add(avionSpinner);
+	add(pisteArrLabel);
+	add(pisteArrSpinner);
+	add(pisteDepLabel);
+	add(pisteDepSpinner);
+	add(placeLabel);
+	add(placeSpinner);
+	add(okButton);
     }
 
     private void checkFormatSpinner() {
@@ -88,6 +80,7 @@ public class JFrameConfig extends JFrame {
 
     private void appearance() {
 	setSize(600, 400);
+	setTitle("Laboratoire 3 : airport base");
 	setLocationRelativeTo(null); // frame centrer
 	setVisible(true); // last!
     }

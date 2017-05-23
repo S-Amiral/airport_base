@@ -1,7 +1,7 @@
 /******************************************************************
  * Axel Rieben & Johnny Da Costa
  * Programmation concurrente : laboratoire 3
- * 28 mai 2017
+ * 23 mai 2017
  ******************************************************************/
 
 package airport.com.version1;
@@ -43,8 +43,7 @@ public class AirportFramePersonnal extends JFrame {
     private int nbPisteDep;
     private int nbPlace;
 
-    public Boolean isOpen; // condition de test pour l'ouverture et la fermeture
-			   // de l'aéroport
+    public Boolean isOpen; // condition de test pour l'ouverture et la fermeture de l'aéroport
 
     public AirportFramePersonnal(int _nbPisteArr, int _nbPisteDep, int _nbPlace, int _nbAvion) {
 	nbPisteArr = _nbPisteArr;
@@ -82,6 +81,7 @@ public class AirportFramePersonnal extends JFrame {
 	    landPanel.add(imgLandingLabel);
 	    landPanel.add(new JLabel("", Tools.scaleImage(imgRoad, 50, 50), JLabel.CENTER));
 	}
+
 	landPanel.add(new JLabel());
 	landPanel.add(nbLandingLabel);
 	airportPanel.add(landPanel);
@@ -106,6 +106,7 @@ public class AirportFramePersonnal extends JFrame {
 	    takeOffPanel.add(new JLabel("", Tools.scaleImage(imgRoad, 50, 50), JLabel.CENTER));
 	    takeOffPanel.add(imgTakeOffLabel);
 	}
+
 	takeOffPanel.add(nbTakeOffLabel);
 	airportPanel.add(takeOffPanel);
 
@@ -122,6 +123,7 @@ public class AirportFramePersonnal extends JFrame {
 	    parkPanel.add(imgParkLabel);
 
 	}
+
 	panel.add(parkPanel, BorderLayout.SOUTH);
 
 	JPanel onAirPanel = new JPanel();
@@ -154,9 +156,7 @@ public class AirportFramePersonnal extends JFrame {
 	    public void actionPerformed(ActionEvent e) {
 		synchronized (AirportFramePersonnal.this) {
 		    AirportFramePersonnal.this.isOpen = true;
-		    AirportFramePersonnal.this.notifyAll(); // on reveille tous
-							    // les
-		    // avions qui "dorment"
+		    AirportFramePersonnal.this.notifyAll(); // on reveille tous les avions qui "dorment"
 		    buttonStart.setEnabled(false);
 		    buttonStop.setEnabled(true);
 		}
@@ -168,8 +168,6 @@ public class AirportFramePersonnal extends JFrame {
 
 	    /**
 	     * Blocage complet de l'aéroport
-	     * 
-	     * @param e
 	     */
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
